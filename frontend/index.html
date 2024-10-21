@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live chat</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <h1>Digite seu nome</h1>
-    <form action="javascript:enterChat()" id="enter-chat-form">
-        <input type="text" id="name"> 
-        <input type="submit" name="Entrar" value="Entrar">
-    </form>  
+    <div id="panel">
+        <h1>Digite seu nome</h1>
+        <form action="javascript:enterChat()" id="enter-chat-form">
+            <input type="text" id="name-input"> 
+            <input type="submit" name="Entrar" value="Entrar">
+        </form>  
+    </div>
+   
     <script type="text/javascript">
         let socket;
 
+        let messagesReceived;
         let textArea;
         let sendMessageButton;
-        startChat()
         
         function enterChat(input){
-            const name = document.getElementById('name').value;
+            const name = document.getElementById('name-input').value;
 
             if (!name){
                 alert('Por favor insira um nome');
@@ -30,7 +34,18 @@
 
             socket.addEventListener("open", (event) => {
                 console.log('Conectado') 
-                //startChat()
+                getOnlineUsersList()
+                startChat()
+            });
+
+            socket.addEventListener("message", async (event) => {
+                console.log(event)
+                console.log(await  event.data.text())
+                const message = JSON.parse(await event.data.text());
+                console.log(`Mensagem recebida: ${message}`)
+                if (message.action === 'receive-message'){
+                    messagesReceived.innerHTML += `${message.message}\r\n`
+                }
             });
 
             socket.addEventListener("error", (event) => {
@@ -42,10 +57,12 @@
             });
         }
 
-        
+        function getOnlineUsersList(){
+            socket.send(JSON.stringify({action: 'get-online-users'}))
+        }
 
         function startChat(){
-            console.log('teste')
+            messagesReceived = document.createElement('div')
             textArea = document.createElement('textarea')
             sendMessageButton = document.createElement('button', {})
             sendMessageButton.innerHTML = 'Enviar mensagem';
@@ -53,7 +70,8 @@
             const form = document.getElementById('enter-chat-form')
 
             if (form){
-                form.insertAdjacentElement('afterend', textArea)
+                form.insertAdjacentElement('afterend', messagesReceived)
+                messagesReceived.insertAdjacentElement('afterend', textArea)
                 textArea.insertAdjacentElement('afterend', sendMessageButton)
             }
 
@@ -62,7 +80,7 @@
 
         function sendMessage(message, teste){
             console.log(`Sending message: ${textArea.value}`);
-            socket.send(textArea.value)
+            socket.send(JSON.stringify({action: 'send-message', receiver: 'recebedor', message: textArea.value}))
             textArea.value = '';
         }
     </script>
