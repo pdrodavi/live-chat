@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live chat</title>
+</head>
+<body>
+    <h1>Digite seu nome</h1>
+    <form action="javascript:enterChat()" id="enter-chat-form">
+        <input type="text" id="name"> 
+        <input type="submit" name="Entrar" value="Entrar">
+    </form>  
+    <script type="text/javascript">
+        let socket;
+
+        let textArea;
+        let sendMessageButton;
+        startChat()
+        
+        function enterChat(input){
+            const name = document.getElementById('name').value;
+
+            if (!name){
+                alert('Por favor insira um nome');
+                return
+            }
+
+            socket = new WebSocket(`ws://localhost:8080?user=${name}`);
+
+            socket.addEventListener("open", (event) => {
+                console.log('Conectado') 
+                //startChat()
+            });
+
+            socket.addEventListener("error", (event) => {
+                console.log("Ocorreu um erro na comunicação: ", event);
+            });
+
+            socket.addEventListener("close", (event) => {
+                console.log("A conexão foi encerrada");
+            });
+        }
+
+        
+
+        function startChat(){
+            console.log('teste')
+            textArea = document.createElement('textarea')
+            sendMessageButton = document.createElement('button', {})
+            sendMessageButton.innerHTML = 'Enviar mensagem';
+            sendMessageButton.addEventListener('click', sendMessage)
+            const form = document.getElementById('enter-chat-form')
+
+            if (form){
+                form.insertAdjacentElement('afterend', textArea)
+                textArea.insertAdjacentElement('afterend', sendMessageButton)
+            }
+
+        }
+
+
+        function sendMessage(message, teste){
+            console.log(`Sending message: ${textArea.value}`);
+            socket.send(textArea.value)
+            textArea.value = '';
+        }
+    </script>
+</body>
+</html>
