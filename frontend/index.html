@@ -7,12 +7,25 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div id="panel">
-        <h1>Digite seu nome</h1>
+    <div id="enter-chat-panel" class="panel">
         <form action="javascript:enterChat()" id="enter-chat-form">
+            <h1>Digite seu nome</h1>
             <input type="text" id="name-input"> 
             <input type="submit" name="Entrar" value="Entrar">
         </form>  
+        
+    </div>
+    <div id="chat-panel" class="panel hide-element">
+        <ul id="users-online">
+            <li class="user-list-item"><img class="avatar" src="https://avatar.iran.liara.run/username?username=Scott+Wilson" alt="User name"> Deyvisson Breno</li>
+            <li class="user-list-item"><img class="avatar" src="https://avatar.iran.liara.run/username?username=Scott+Wilson" alt="User name"> Deyvisson Breno</li> 
+            <li class="user-list-item"><img class="avatar" src="https://avatar.iran.liara.run/username?username=Scott+Wilson" alt="User name"> Deyvisson Breno</li>
+        </ul>
+        <div>            
+            <div id="messagesReceived"></div>
+            <input type="text" id="textArea">
+            <button onclick="sendMessage()">Enviar mensagem</button>
+        </div>
     </div>
    
     <script type="text/javascript">
@@ -62,18 +75,10 @@
         }
 
         function startChat(){
-            messagesReceived = document.createElement('div')
-            textArea = document.createElement('textarea')
-            sendMessageButton = document.createElement('button', {})
-            sendMessageButton.innerHTML = 'Enviar mensagem';
-            sendMessageButton.addEventListener('click', sendMessage)
-            const form = document.getElementById('enter-chat-form')
-
-            if (form){
-                form.insertAdjacentElement('afterend', messagesReceived)
-                messagesReceived.insertAdjacentElement('afterend', textArea)
-                textArea.insertAdjacentElement('afterend', sendMessageButton)
-            }
+            const enterChatPanel = document.getElementById('enter-chat-panel');
+            const chatPanel = document.getElementById('chat-panel');
+            enterChatPanel.classList.toggle('hide-element'); 
+            chatPanel.classList.toggle('hide-element'); 
 
         }
 
