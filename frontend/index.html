@@ -16,11 +16,7 @@
         
     </div>
     <div id="chat-panel" class="panel hide-element">
-        <ul id="users-online">
-            <li class="user-list-item"><img class="avatar" src="https://avatar.iran.liara.run/username?username=Scott+Wilson" alt="User name"> Deyvisson Breno</li>
-            <li class="user-list-item"><img class="avatar" src="https://avatar.iran.liara.run/username?username=Scott+Wilson" alt="User name"> Deyvisson Breno</li> 
-            <li class="user-list-item"><img class="avatar" src="https://avatar.iran.liara.run/username?username=Scott+Wilson" alt="User name"> Deyvisson Breno</li>
-        </ul>
+        <ul id="users-online"></ul>
         <div>            
             <div id="messagesReceived"></div>
             <input type="text" id="textArea">
@@ -29,11 +25,13 @@
     </div>
    
     <script type="text/javascript">
-        let socket;
+        var socket;
 
-        let messagesReceived;
-        let textArea;
-        let sendMessageButton;
+        var messagesReceived = document.getElementById('messagesReceived');
+        var textArea =  document.getElementById('textArea');
+
+        var selectedUser;
+
         
         function enterChat(input){
             const name = document.getElementById('name-input').value;
@@ -52,10 +50,13 @@
             });
 
             socket.addEventListener("message", async (event) => {
-                console.log(event)
-                console.log(await  event.data.text())
-                const message = JSON.parse(await event.data.text());
-                console.log(`Mensagem recebida: ${message}`)
+                console.log(`Mensagem recebida: ${event.data}`)
+                const message = JSON.parse(event.data);
+
+                if (message.action === 'online-users'){
+                    updateOnlineUsers(message.onlineUsers)
+                }
+
                 if (message.action === 'receive-message'){
                     messagesReceived.innerHTML += `${message.message}\r\n`
                 }
@@ -83,10 +84,41 @@
         }
 
 
-        function sendMessage(message, teste){
+        function sendMessage(){
             console.log(`Sending message: ${textArea.value}`);
-            socket.send(JSON.stringify({action: 'send-message', receiver: 'recebedor', message: textArea.value}))
+            socket.send(JSON.stringify({action: 'send-message', receiver: selectedUser, message: textArea.value}))
             textArea.value = '';
+        }
+
+        function updateOnlineUsers(onlineUsers){
+            const ul = document.getElementById('users-online')
+            const childrenArray = Array.from(ul.children);
+            console.log(childrenArray)
+
+            for (const onlineUser of onlineUsers){
+
+                const userItemFound = childrenArray.find(child => child.id === onlineUser);
+
+                if(!userItemFound){
+                    const newUserItem = document.createElement('il');
+                    newUserItem.id = onlineUser
+                    newUserItem.classList.add('user-list-item')
+                    newUserItem.textContent = onlineUser
+                    newUserItem.onclick = selectUser;
+
+                    const avatar = document.createElement('img')
+                    avatar.src = 'https://avatar.iran.liara.run/username?username=' + onlineUser
+                    avatar.alt = onlineUser
+                    avatar.classList.add('avatar')
+                    newUserItem.insertBefore(avatar, newUserItem.firstChild)
+                    ul.appendChild(newUserItem)
+                }
+
+            }
+        }
+
+        function selectUser(event){
+            selectedUser = event.srcElement.id
         }
     </script>
 </body>

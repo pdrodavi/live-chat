@@ -23,11 +23,10 @@ server.on('connection', (ws, req) =>{
     ws.on('message', (message) =>{
         console.log('Message received: ' + message.toString());
         const parsedMessage =  JSON.parse(message.toString())
-        console.log(parsedMessage.action)
 
-        if (parsedMessage.action === 'get-online-users'){
-            ws.send(getOnlineUsersList())
-        }
+        const onlineUsers = getOnlineUsersList()
+
+        ws.send(JSON.stringify({action: 'online-users', onlineUsers}))
 
         if (parsedMessage.action === 'send-message'){
             const foundConnection = connections.find(connection => connection.user === parsedMessage.receiver)
