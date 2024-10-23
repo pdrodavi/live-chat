@@ -69,7 +69,7 @@ function activateChat(active){
 
 function sendMessage(){
     console.log(`Sending message: ${textArea.value}`);
-    socket.send(JSON.stringify({action: 'send-message', receiver: selectedUser, message: textArea.value}))
+    socket.send(JSON.stringify({action: 'send-message', receiver: selectedUser.id, message: textArea.value}))
     
     const sentMessage = document.createElement('li')
     sentMessage.classList.add('message-sent')
@@ -107,5 +107,10 @@ function updateOnlineUsers(onlineUsers){
 }
 
 function selectUser(event){
-    selectedUser = event.srcElement.id
+
+    if (selectedUser){
+        selectedUser.classList.remove('user-list-item-clicked')
+    }
+    selectedUser = event.currentTarget
+    selectedUser.classList.add('user-list-item-clicked')
 }

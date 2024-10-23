@@ -79,7 +79,9 @@ h1 {
     background-color: rgb(32, 44, 51);
 }
 
-
+.user-list-item-clicked {
+    background-color: rgb(42, 57, 66) !important;
+}
 
 
 input[type="submit"] {
@@ -124,7 +126,9 @@ input[type="submit"] {
 }
 
 .message-received {
-    width: 100px;
+    min-width: 100px;
+    max-width: 45%;
+    word-wrap: break-word; 
     color: #FFFFFF;
     background-color: rgb(32, 44, 51);
     padding: 8px;
@@ -133,7 +137,9 @@ input[type="submit"] {
 }
 
 .message-sent {
-    width: 100px;
+    min-width: 100px;
+    max-width: 45%;
+    word-wrap: break-word; 
     color: #FFFFFF;
     background-color: rgb(0, 92, 75);
     padding: 8px;
@@ -143,7 +149,6 @@ input[type="submit"] {
 }
 
 #send-message-area {
-    border: 1px solid blue;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
