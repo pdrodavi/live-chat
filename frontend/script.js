@@ -18,8 +18,7 @@ function enterChat(input){
 
     socket.addEventListener("open", (event) => {
         console.log('Conectado') 
-        getOnlineUsersList()
-        startChat()
+        activateChat(true)
     });
 
     socket.addEventListener("message", async (event) => {
@@ -43,20 +42,28 @@ function enterChat(input){
     });
 
     socket.addEventListener("close", (event) => {
+        activateChat(false)
+        if (event.code === 1008 & event.reason === "name.already.registered"){
+            return alert("Já existe um usuário online registrado com esse nome, por favor escolha outro nome.")
+        }
+
+        alert("Chat desconectado!")
         console.log("A conexão foi encerrada");
     });
 }
 
-function getOnlineUsersList(){
-    socket.send(JSON.stringify({action: 'get-online-users'}))
-}
-
-function startChat(){
+function activateChat(active){
     const enterChatPanel = document.getElementById('enter-chat-panel');
     const chatPanel = document.getElementById('chat-panel');
-    enterChatPanel.classList.toggle('hide-element'); 
-    chatPanel.classList.toggle('hide-element'); 
 
+    if (active){
+        enterChatPanel.classList.add('hide-element'); 
+        chatPanel.classList.remove('hide-element'); 
+    } else{
+        enterChatPanel.classList.remove('hide-element'); 
+        chatPanel.classList.add('hide-element'); 
+    }
+   
 }
 
 
