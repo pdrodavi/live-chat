@@ -1,4 +1,4 @@
-const chatService = require('./chat-service')
+const chatService = require('../services/chat-service')
 
 
 class Controller {

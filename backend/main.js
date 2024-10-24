@@ -1,6 +1,6 @@
 const WebSocketServer = require('ws').WebSocketServer
 
-const controller = require('./controller')
+const controller = require('./app/controllers/controller')
 
 const options = {
     port: 8080
