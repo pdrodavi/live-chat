@@ -20,7 +20,7 @@ export class Controller {
         })
         
         ws.on('message', (message) =>{
-            this.onMessage(message)
+            this.onMessage(message, user)
         })
         
         ws.on('close', (ws)=>{
@@ -28,7 +28,7 @@ export class Controller {
         }) 
     }
 
-    onMessage(message){
+    onMessage(message, sender){
         console.log('Message received: ' + message.toString());
         const parsedMessage =  JSON.parse(message.toString()); 
 
@@ -36,7 +36,7 @@ export class Controller {
             const foundConnection = this.chatService.getConnectionByUser(parsedMessage.receiver)
 
             if (foundConnection){
-                foundConnection.ws.send(JSON.stringify({action: 'receive-message', message: parsedMessage.message}))
+                foundConnection.ws.send(JSON.stringify({action: 'receive-message', sender, message: parsedMessage.message}))
             }
         }
     }
