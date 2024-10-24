@@ -1,5 +1,6 @@
 export class Service {
     textArea = document.getElementById('text-area');
+    sendMessageButton = document.getElementById('send-message-button');
     messagePanel = document.getElementById('message-panel');
     socket; 
     selectedUser;
@@ -76,7 +77,7 @@ export class Service {
                 const messageArea = document.createElement('ul');
                 messageArea.setAttribute('name', onlineUser);
                 messageArea.classList.add('messages');
-                this.messageAreas.push(messageArea);
+                this.messageAreas.push(messageArea);                
             }
     
         }
@@ -96,6 +97,9 @@ export class Service {
 
         const unreadMessages = this.selectedUser.lastChild;
         unreadMessages.textContent = ''
+
+        this.textArea.disabled = false
+        this.sendMessageButton.disabled = false
 
     }
 

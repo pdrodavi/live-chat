@@ -194,10 +194,16 @@ input[type="submit"] {
 }
 
 #send-message-button {
+    background-color: transparent;
+    border: 0;
     width: 48px;
     height: 48px;
     border-radius: 24px;
-    cursor: pointer;
     margin: 0 5px;
+}
+
+#send-message-button:not(:disabled):hover {    
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
