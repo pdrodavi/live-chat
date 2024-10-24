@@ -48,22 +48,30 @@ export class Service {
     
             if(!userItemFound){
                 const newUserItem = document.createElement('il');
-                newUserItem.id = onlineUser
-                newUserItem.classList.add('user-list-item')
-                newUserItem.textContent = onlineUser
+                newUserItem.id = onlineUser;
+                newUserItem.classList.add('user-list-item');
                 newUserItem.onclick = this.selectUser.bind(this);
     
-                const avatar = document.createElement('img')
-                avatar.src = 'https://avatar.iran.liara.run/username?username=' + onlineUser
-                avatar.alt = onlineUser
-                avatar.classList.add('avatar')
-                newUserItem.insertBefore(avatar, newUserItem.firstChild)
-                ul.appendChild(newUserItem)
+                const avatar = document.createElement('img');
+                avatar.src = 'https://avatar.iran.liara.run/username?username=' + onlineUser;
+                avatar.alt = onlineUser;
+                avatar.classList.add('avatar');
+                newUserItem.insertBefore(avatar, newUserItem.firstChild);
+                ul.appendChild(newUserItem);
 
-                const messageArea = document.createElement('ul')
-                messageArea.setAttribute('name', onlineUser)
-                messageArea.classList.add('messages')
-                this.messageAreas.push(messageArea)
+                const userNameDiv = document.createElement('div');
+                userNameDiv.classList.add('user-list-item-name');
+                userNameDiv.textContent = onlineUser;
+                newUserItem.appendChild(userNameDiv);
+
+                const unreadMessagesDiv = document.createElement('div');
+                unreadMessagesDiv.classList.add('unread-messages');
+                newUserItem.appendChild(unreadMessagesDiv);
+
+                const messageArea = document.createElement('ul');
+                messageArea.setAttribute('name', onlineUser);
+                messageArea.classList.add('messages');
+                this.messageAreas.push(messageArea);
             }
     
         }
@@ -81,6 +89,9 @@ export class Service {
         this.messagePanel.removeChild(this.messagePanel.firstChild)
         this.messagePanel.insertBefore(messageArea, this.messagePanel.firstChild)
 
+        const unreadMessages = this.selectedUser.lastChild;
+        unreadMessages.textContent = ''
+
     }
 
     receiveMessage(message){
@@ -94,6 +105,11 @@ export class Service {
         receivedMessage.classList.add('message-received');
         receivedMessage.textContent = message.message;
         messageArea.appendChild(receivedMessage);
+
+        const userListItem = document.getElementById(message.sender);
+        const unreadMessages = userListItem.lastChild;
+
+        unreadMessages.textContent = !unreadMessages.textContent ? 1 : Number(unreadMessages.textContent) + 1
     }
 
     getMessageAreaBySenderName(senderName){
