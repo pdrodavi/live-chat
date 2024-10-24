@@ -1,8 +1,9 @@
 export class Service {
-    socket = {}    
-
     textArea = document.getElementById('text-area');
+    messagePanel = document.getElementById('message-panel');
+    socket; 
     selectedUser;
+    messageAreas = []
 
     constructor(socket){
         this.socket = socket
@@ -20,8 +21,7 @@ export class Service {
             chatPanel.classList.add('hide-element'); 
         }
        
-    }
-    
+    }    
     
     sendMessage(){
         console.log(`Sending message: ${this.textArea.value}`);
@@ -31,7 +31,8 @@ export class Service {
         const sentMessage = document.createElement('li')
         sentMessage.classList.add('message-sent')
         sentMessage.textContent = this.textArea.value
-        messages.appendChild(sentMessage)
+        const messageArea = this.getMessageAreaBySenderName(this.selectedUser.id)
+        messageArea.appendChild(sentMessage)
         
         this.textArea.value = '';
     }
@@ -58,6 +59,11 @@ export class Service {
                 avatar.classList.add('avatar')
                 newUserItem.insertBefore(avatar, newUserItem.firstChild)
                 ul.appendChild(newUserItem)
+
+                const messageArea = document.createElement('ul')
+                messageArea.setAttribute('name', onlineUser)
+                messageArea.classList.add('messages')
+                this.messageAreas.push(messageArea)
             }
     
         }
@@ -70,5 +76,27 @@ export class Service {
         }
         this.selectedUser = event.currentTarget
         this.selectedUser.classList.add('user-list-item-clicked')
+
+        const messageArea = this.getMessageAreaBySenderName(this.selectedUser.id)
+        this.messagePanel.removeChild(this.messagePanel.firstChild)
+        this.messagePanel.insertBefore(messageArea, this.messagePanel.firstChild)
+
+    }
+
+    receiveMessage(message){
+        const messageArea = this.getMessageAreaBySenderName(message.sender)
+        
+        if (!messageArea){
+            return
+        }
+        
+        const receivedMessage = document.createElement('li');
+        receivedMessage.classList.add('message-received');
+        receivedMessage.textContent = message.message;
+        messageArea.appendChild(receivedMessage);
+    }
+
+    getMessageAreaBySenderName(senderName){
+        return this.messageAreas.find(messageArea => messageArea.getAttribute('name') === senderName); 
     }
 }

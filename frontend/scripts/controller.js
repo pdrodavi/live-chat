@@ -18,14 +18,11 @@ export class Controller {
         const message = JSON.parse(event.data);
 
         if (message.action === 'online-users'){
-            this.service.updateOnlineUsers(message.onlineUsers)
+            this.service.updateOnlineUsers(message.onlineUsers);
         }
 
         if (message.action === 'receive-message'){
-            const receivedMessage = document.createElement('li')
-            receivedMessage.classList.add('message-received')
-            receivedMessage.textContent = message.message
-            messages.appendChild(receivedMessage)
+            this.service.receiveMessage(message);
         }
     }
 
