@@ -31,6 +31,11 @@ export class Service {
         const sentMessage = document.createElement('li')
         sentMessage.classList.add('message-sent')
         sentMessage.textContent = this.textArea.value
+        const messageTime = document.createElement('div')
+        messageTime.classList.add('message-time')
+        const now = new Date();
+        messageTime.textContent = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
+        sentMessage.appendChild(messageTime)
         const messageArea = this.getMessageAreaBySenderName(this.selectedUser.id)
         messageArea.appendChild(sentMessage)
         
@@ -104,6 +109,11 @@ export class Service {
         const receivedMessage = document.createElement('li');
         receivedMessage.classList.add('message-received');
         receivedMessage.textContent = message.message;
+        const messageTime = document.createElement('div')
+        messageTime.classList.add('message-time')
+        const now = new Date();
+        messageTime.textContent = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
+        receivedMessage.appendChild(messageTime)
         messageArea.appendChild(receivedMessage);
 
         const userListItem = document.getElementById(message.sender);
