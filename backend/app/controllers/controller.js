@@ -1,17 +1,17 @@
-const chatService = require('../services/chat-service')
+import {ChatService} from '../services/chat-service.js'
 
-
-class Controller {
+export class Controller {
+    chatService = new ChatService()
 
     onConnection(ws, req){
-        const user = chatService.getUser(req);
+        const user = this.chatService.getUser(req);
     
-        if (chatService.isUserAlreadyRegistered(user)){
+        if (this.chatService.isUserAlreadyRegistered(user)){
             ws.close(1008, 'name.already.registered')
         }     
         
-        chatService.pushConnection(user, ws)
-        chatService.sendOnlineUsers()
+        this.chatService.pushConnection(user, ws)
+        this.chatService.sendOnlineUsers()
     
         console.log(`User connected ${user}`);  
     
@@ -33,7 +33,7 @@ class Controller {
         const parsedMessage =  JSON.parse(message.toString()); 
 
         if (parsedMessage.action === 'send-message'){
-            const foundConnection = chatService.getConnectionByUser(parsedMessage.receiver)
+            const foundConnection = this.chatService.getConnectionByUser(parsedMessage.receiver)
 
             if (foundConnection){
                 foundConnection.ws.send(JSON.stringify({action: 'receive-message', message: parsedMessage.message}))
@@ -42,13 +42,10 @@ class Controller {
     }
 
     onClose(ws){
-        chatService.removeConnection(ws);
+        this.chatService.removeConnection(ws);
     }
 
     onError(error){
         console.log(error);
     }
 }
-
-
-module.exports = new Controller();

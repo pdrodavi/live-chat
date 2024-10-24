@@ -1,4 +1,4 @@
-class ChatService{
+export class ChatService{
     connections = []
 
     pushConnection(user, ws){
@@ -32,5 +32,3 @@ class ChatService{
         this.sendOnlineUsers()
     }
 }
-
-module.exports = new ChatService()
