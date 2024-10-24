@@ -21,12 +21,12 @@
         <div id="message-panel">            
             <ul class="messages">
             </ul>
-            <div id="send-message-area">
-                <input type="text" id="text-area">
-                <button id="send-message-button" onclick="sendMessage()">
+            <form onsubmit="sendMessage(); return false;" id="send-message-area">
+                <input autocomplete="off" type="text" id="text-area">
+                <button type="submit" id="send-message-button">
                     <img src="files/send.svg" alt="Send Message" width="24" height="24">
                 </button>    
-            </div>
+            </form>
         </div>
     </div>
     <script type="module" src="scripts/script.js"></script>
