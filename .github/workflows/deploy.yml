@@ -12,11 +12,6 @@ jobs:
     environment: live-chat-server
 
     steps:
-    - name: Add droplet to known_hosts
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan -H $DROPLET_IP >> ~/.ssh/known_hosts
-
     - name: Checkout code
       uses: actions/checkout@v2
    
@@ -26,6 +21,8 @@ jobs:
         DROPLET_IP: ${{ vars.DROPLET_IP }}
         USER: deploy
       run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H $DROPLET_IP >> ~/.ssh/known_hosts
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
         scp -i private_key -r ./* $USER@$DROPLET_IP:/home/deploy/github/live-chat
