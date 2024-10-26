@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: live-chat-server
 
     steps:
     - name: Checkout code
