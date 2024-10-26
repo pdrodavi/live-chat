@@ -12,6 +12,10 @@ jobs:
     environment: live-chat-server
 
     steps:
+    - name: Add droplet to known_hosts
+      run: |
+        ssh-keyscan -H $DROPLET_IP >> ~/.ssh/known_hosts
+
     - name: Checkout code
       uses: actions/checkout@v2
    
