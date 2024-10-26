@@ -26,4 +26,4 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
         scp -i private_key -r ./* $USER@$DROPLET_IP:/home/deploy/github/live-chat
-        ssh -i private_key $USER@$DROPLET_IP 'cd /home/deploy/github/live-chat/backend && npm install && pm2 restart all'
+        ssh -i private_key $USER@$DROPLET_IP 'cd /home/deploy/github/live-chat/backend && npm install && pm2 restart live-chat'
