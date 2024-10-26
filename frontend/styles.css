@@ -177,6 +177,7 @@ input[type="submit"] {
 }
 
 #send-message-area {
+    background-color: rgb(32, 44, 51);
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -186,9 +187,12 @@ input[type="submit"] {
 }
 
 #text-area {
+    background-color: rgb(42, 57, 66);
+    color: #FFFFFF;
+    outline: none;
     width: 90%;
     height: 30px;
-    border-radius: 15px;
+    border-radius: 8px;
     padding: 5px;
     border: none;
 }
