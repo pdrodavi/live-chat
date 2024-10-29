@@ -39,6 +39,7 @@ export class Service {
         sentMessage.appendChild(messageTime)
         const messageArea = this.getMessageAreaBySenderName(this.selectedUser.id)
         messageArea.appendChild(sentMessage)
+        this.scrollToBottom(messageArea)
         
         this.textArea.value = '';
     }
@@ -84,7 +85,6 @@ export class Service {
     }
     
     selectUser(event){    
-        console.log('selecionou')
         if (this.selectedUser){
             this.selectedUser.classList.remove('user-list-item-clicked')
         }
@@ -92,7 +92,7 @@ export class Service {
         this.selectedUser.classList.add('user-list-item-clicked')
 
         const messageArea = this.getMessageAreaBySenderName(this.selectedUser.id)
-        this.messagePanel.removeChild(this.messagePanel.firstChild)
+        this.messagePanel.removeChild(this.messagePanel.firstElementChild)
         this.messagePanel.insertBefore(messageArea, this.messagePanel.firstChild)
 
         const unreadMessages = this.selectedUser.lastChild;
@@ -118,7 +118,8 @@ export class Service {
         const now = new Date();
         messageTime.textContent = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
         receivedMessage.appendChild(messageTime)
-        messageArea.appendChild(receivedMessage);
+        messageArea.appendChild(receivedMessage);        
+        this.scrollToBottom(messageArea);
 
         const userListItem = document.getElementById(message.sender);
         const unreadMessages = userListItem.lastChild;
@@ -128,5 +129,12 @@ export class Service {
 
     getMessageAreaBySenderName(senderName){
         return this.messageAreas.find(messageArea => messageArea.getAttribute('name') === senderName); 
+    }
+
+    scrollToBottom(element) {
+        const isAtBottom = element.scrollTop + element.clientHeight >= element.scrollHeight - 100;
+        if (isAtBottom) {
+            element.scrollTop = element.scrollHeight;
+        }
     }
 }
