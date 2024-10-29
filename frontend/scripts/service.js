@@ -6,20 +6,24 @@ export class Service {
     selectedUser;
     messageAreas = []
 
-    constructor(socket){
+    constructor(socket, name){
         this.socket = socket
+        this.name = name
     }
 
     activateChat(active){
         const enterChatPanel = document.getElementById('enter-chat-panel');
         const chatPanel = document.getElementById('chat-panel');
+        const welcomeMessage = document.getElementById('welcome-message');
     
         if (active){
             enterChatPanel.classList.add('hide-element'); 
-            chatPanel.classList.remove('hide-element'); 
+            chatPanel.classList.remove('hide-element');
+            welcomeMessage.textContent = `Bem-vindo ao live-chat, ${this.name}!` 
         } else{
             enterChatPanel.classList.remove('hide-element'); 
             chatPanel.classList.add('hide-element'); 
+            welcomeMessage.textContent = `Live chat` 
         }
        
     }    

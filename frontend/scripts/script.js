@@ -16,7 +16,7 @@ function enterChat(){
         return
     }   
 
-    service = new Service(socket)
+    service = new Service(socket, name)
     const controller = new Controller(service);     
    
     

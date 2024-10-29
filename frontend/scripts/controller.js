@@ -1,6 +1,4 @@
 
-var messages = document.getElementById('messages');
-
 export class Controller {
     service = {}
 

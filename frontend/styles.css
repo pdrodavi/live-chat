@@ -16,6 +16,15 @@ h1 {
     color: #FFFFFF;
 }
 
+#welcome-message{
+    text-align: center;
+    height: 40px;
+    padding: 0;
+    margin: 10px; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
 .panel {
     border-radius: 10px;
     width: 100%;
