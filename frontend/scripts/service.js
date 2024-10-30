@@ -73,19 +73,35 @@ export class Service {
                 const userNameDiv = document.createElement('div');
                 userNameDiv.classList.add('user-list-item-name');
                 userNameDiv.textContent = onlineUser;
-                newUserItem.appendChild(userNameDiv);
+                newUserItem.appendChild(userNameDiv);             
 
                 const unreadMessagesDiv = document.createElement('div');
                 unreadMessagesDiv.classList.add('unread-messages');
                 newUserItem.appendChild(unreadMessagesDiv);
 
+                const onlineStatus = document.createElement('div');
+                onlineStatus.classList.add('online-status')
+                newUserItem.appendChild(onlineStatus)
+
                 const messageArea = document.createElement('ul');
                 messageArea.setAttribute('name', onlineUser);
                 messageArea.classList.add('messages');
                 this.messageAreas.push(messageArea);                
+            } else {
+                const onlineStatus = userItemFound.lastChild
+                onlineStatus.classList.remove('offline')
             }
     
         }
+
+        for (const userToVerifyIfIsOffline of childrenArray){
+            const userOnline = onlineUsers.find(onlineUser => onlineUser === userToVerifyIfIsOffline.id)
+            if (!userOnline){
+                const onlineStatus = userToVerifyIfIsOffline.lastChild
+                onlineStatus.classList.add('offline')
+            }
+        }
+
     }
     
     selectUser(event){  
@@ -101,7 +117,7 @@ export class Service {
         this.messagePanel.removeChild(this.messagePanel.firstElementChild)
         this.messagePanel.insertBefore(messageArea, this.messagePanel.firstChild)
 
-        const unreadMessages = this.selectedUser.lastChild;
+        const unreadMessages = this.selectedUser.children[2];
         unreadMessages.textContent = ''
 
         this.textArea.disabled = false
@@ -129,7 +145,7 @@ export class Service {
         this.scrollToBottom(messageArea);
 
         const userListItem = document.getElementById(message.sender);
-        const unreadMessages = userListItem.lastChild;
+        const unreadMessages = userListItem.children[2];
 
         unreadMessages.textContent = !unreadMessages.textContent ? 1 : Number(unreadMessages.textContent) + 1
     }
