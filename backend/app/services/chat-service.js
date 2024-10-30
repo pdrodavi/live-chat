@@ -1,5 +1,18 @@
+import {WebSocket} from 'ws'
+
 export class ChatService{
+    pingInterval = 5000;
     connections = []
+
+    constructor(){
+        setInterval(() => {
+            for (const connection of this.connections){
+                if (connection.ws.readyState === WebSocket.OPEN) {
+                    connection.ws.ping(); 
+                }
+            }            
+          }, this.pingInterval);
+    }
 
     pushConnection(user, ws){
         this.connections.push({user, ws})
