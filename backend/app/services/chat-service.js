@@ -26,9 +26,9 @@ export class ChatService{
     }
 
     removeConnection(ws){                
-        console.log('Connection closed sending users online to all users');
         const connectionIndex = this.connections.indexOf(connection => connection.ws === ws)
-        this.connections.splice(connectionIndex, 1)
+        const removedConnection = this.connections.splice(connectionIndex, 1)
+        console.log(`${removedConnection[0].user} Connection closed, sending users online to all users`);
         this.sendOnlineUsers()
     }
 }

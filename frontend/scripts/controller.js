@@ -7,12 +7,12 @@ export class Controller {
     }
 
     onOpen(){
-        console.log('Conectado') 
+        console.log('Chat Connected') 
         this.service.activateChat(true)
     }
 
     onMessage(event){
-        console.log(`Mensagem recebida: ${event.data}`)
+        console.log(`Message received: ${event.data}`)
         const message = JSON.parse(event.data);
 
         if (message.action === 'online-users'){
@@ -25,7 +25,7 @@ export class Controller {
     }
 
     onError(event){        
-        console.log("Ocorreu um erro na comunicação: ", event);
+        console.log("An error has occurred: ", event);
     }
 
     onClose(event){
@@ -35,6 +35,6 @@ export class Controller {
         }
 
         alert("Chat desconectado!")
-        console.log("A conexão foi encerrada");
+        console.log("Connection closed");
     }
 }

@@ -13,7 +13,7 @@ export class Controller {
         this.chatService.pushConnection(user, ws)
         this.chatService.sendOnlineUsers()
     
-        console.log(`User connected ${user}`);  
+        console.log(`User connected: ${user}`);  
     
         ws.on('error', (error) =>{
             this.onError(error)

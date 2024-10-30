@@ -49,9 +49,9 @@ export class Service {
     }
     
     updateOnlineUsers(onlineUsers){
+        console.log('Updating online users' + JSON.stringify(onlineUsers))
         const ul = document.getElementById('users-online')
         const childrenArray = Array.from(ul.children);
-        console.log(childrenArray)
     
         for (const onlineUser of onlineUsers){
     
@@ -88,12 +88,14 @@ export class Service {
         }
     }
     
-    selectUser(event){    
+    selectUser(event){  
         if (this.selectedUser){
             this.selectedUser.classList.remove('user-list-item-clicked')
         }
         this.selectedUser = event.currentTarget
         this.selectedUser.classList.add('user-list-item-clicked')
+        
+        console.log('User selected: ' + this.selectUser.id)
 
         const messageArea = this.getMessageAreaBySenderName(this.selectedUser.id)
         this.messagePanel.removeChild(this.messagePanel.firstElementChild)
@@ -108,6 +110,7 @@ export class Service {
     }
 
     receiveMessage(message){
+        console.log('Message received: ' + JSON.stringify(message))
         const messageArea = this.getMessageAreaBySenderName(message.sender)
         
         if (!messageArea){
